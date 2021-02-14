@@ -31,7 +31,10 @@ abstract class Tools
      * Certificate::class
      * @var \NFePHP\Common\Certificate
      */
-    protected $certificate;
+    //protected $certificate;
+    // TODO: tornado public para permitir manipular apos instanciado em tools:
+    public $certificate;
+
     /**
      * Soap::class
      * @var \NFePHP\Common\Soap\SoapInterface

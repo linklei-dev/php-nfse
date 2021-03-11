@@ -140,7 +140,7 @@ class Tools extends ToolsBase
         $dom->formatOutput = true;
         $dom->loadXML($message);
         $message = str_replace('<?xml version="1.0"?>', '<?xml version="1.0" encoding="UTF-8"?>', $dom->saveXML());
-        
+
         $messageText = $message;
         if ($this->withcdata) {
             $messageText = ($message);
@@ -167,5 +167,26 @@ class Tools extends ToolsBase
             $this->namespaces[$this->soapversion],
             $request
         );
+    }
+
+    /**
+     * Pedido de status de uma NFS-e
+     *
+     * Recebe o STATUS de uma NFSE, passando a chave de acesso da nota.
+     *
+     * @param type $lote Número do lote
+     * @return type
+     */
+    public function pedConsultaTrans($chave)
+    {
+        $this->method = 'ns1:consultarNotaFiscal';
+        $fact = new Factories\PedConsultaTrans($this->certificate);
+        $fact->setSignAlgorithm($this->algorithm);
+        $message = $fact->render(
+            $this->config->versao,
+            $this->config->cnpj,
+            $chave
+        );
+        return $this->sendRequest('', $message);
     }
 }

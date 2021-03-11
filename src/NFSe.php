@@ -34,8 +34,14 @@ class NFSe
     {
         if (is_file($config)) {
             $config = file_get_contents($config);
+        } else if (is_string($config)) {
+            $configClass = json_decode($config);
+        } else if (is_array($config)) {
+            $configClass = (object) $config;
+        } else {
+            return false;
         }
-        $configClass = json_decode($config);
+
         $this->convert = NFSeStatic::convert($configClass);
         $this->rps = NFSeStatic::rps($configClass);
         $this->tools = NFSeStatic::tools($configClass, $certificate);

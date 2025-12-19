@@ -203,7 +203,7 @@ class RenderRPS
             'Site',
             false
         );
-        
+
         $endereco = self::$dom->createElement('end');
         self::$dom->addChild(
             $endereco,
@@ -288,7 +288,7 @@ class RenderRPS
 
         self::$dom->appChild($prestador, $endereco, 'Adicionando tag Endereco do Prestador');
         //Fim endereço
-        
+
         self::$dom->addChild(
             $prestador,
             'fone',
@@ -784,6 +784,7 @@ class RenderRPS
                 '',
                 false
             );
+
             self::$dom->addChild(
                 $serv,
                 'totalAproxTribServ',
@@ -793,7 +794,168 @@ class RenderRPS
                 false
             );
 
+            self::$dom->addChild(
+                $serv, // Dom Element
+                'CSTPisCofins', // Name
+                $rps->serv[$d->nItem]->CSTPisCofins, // Content
+                true, // Obrigatorio
+                'Código de Situação Tributária do PIS/COFINS (CST)', // Descricao
+                true, // Force (se nao preenchido exibe aviso: Preenchimento obrigatorio)
+            );
+
+            self::$dom->addChild(
+                $serv, // Dom Element
+                'cNBS', // Name
+                $rps->serv[$d->nItem]->cNBS, // Content
+                true, // Obrigatorio
+                'Código NBS correspondente ao serviço prestado', // Descricao
+                true, // Force (se nao preenchido exibe aviso: Preenchimento obrigatorio)
+            );
+
             self::$dom->appChild($det, $serv, 'Adicionando tag Endereco do Prestador');
+
+
+            // IBS CBS de Envio:
+            if (isset($rps->det[$d->nItem]->IBSCBS)) {
+
+                $IBSCBS = self::$dom->createElement('IBSCBS');
+                self::$dom->addChild(
+                    $IBSCBS,
+                    'finNFSe',
+                    $rps->det[$d->nItem]->IBSCBS->finNFSe,
+                    true,
+                    'Indicador da finalidade da emissão de NFS-e 0 = NFS-e regular',
+                    true
+                );
+
+                self::$dom->addChild(
+                    $IBSCBS,
+                    'indFinal',
+                    $rps->det[$d->nItem]->IBSCBS->indFinal,
+                    true,
+                    'Indica operação de uso ou consumo pessoal. (art. 57), 0 = Não, 1 = Sim',
+                    true
+                );
+
+                self::$dom->addChild(
+                    $IBSCBS,
+                    'cIndOp',
+                    $rps->det[$d->nItem]->IBSCBS->cIndOp,
+                    true,
+                    'Código indicador da operação de fornecimento, conforme tabela: código indicador de operação',
+                    true
+                );
+
+                if (isset($rps->det[$d->nItem]->IBSCBS->tpOper)) {
+                    self::$dom->addChild(
+                        $IBSCBS,
+                        'tpOper',
+                        $rps->det[$d->nItem]->IBSCBS->tpOper,
+                        false,
+                        'Tipo de Operação com Entes Governamentais ou outros serviços sobre bens imóveis.',
+                        false
+                    );
+                }
+
+                if (isset($rps->det[$d->nItem]->IBSCBS->gRefNFSe)) {
+                    self::$dom->addChild(
+                        $IBSCBS,
+                        'gRefNFSe',
+                        $rps->det[$d->nItem]->IBSCBS->gRefNFSe,
+                        false,
+                        'Grupo de NFS-e referenciadas.',
+                        false
+                    );
+                }
+
+                if (isset($rps->det[$d->nItem]->IBSCBS->tpEnteGov)) {
+                    self::$dom->addChild(
+                        $IBSCBS,
+                        'tpEnteGov',
+                        $rps->det[$d->nItem]->IBSCBS->tpEnteGov,
+                        false,
+                        'Tipo de ente governamental. Para administração pública direta e suas autarquias e fundações.',
+                        false
+                    );
+                }
+
+                self::$dom->addChild(
+                    $IBSCBS,
+                    'indDest',
+                    $rps->det[$d->nItem]->IBSCBS->indDest,
+                    true,
+                    'A respeito do Destinatário dos serviços, 0 = destinatario é o proprio tomadar,  = destinatario não é o proprio tomador/adquirinte.',
+                    true
+                );
+
+                if (isset($rps->det[$d->nItem]->IBSCBS->dest)) {
+                    self::$dom->addChild(
+                        $IBSCBS,
+                        'dest',
+                        $rps->det[$d->nItem]->IBSCBS->dest,
+                        false,
+                        'Informações relativas ao Destinatário, se diferente do tomador.',
+                        false
+                    );
+                }
+
+                if (isset($rps->det[$d->nItem]->IBSCBS->imovel)) {
+                    self::$dom->addChild(
+                        $IBSCBS,
+                        'imovel',
+                        $rps->det[$d->nItem]->IBSCBS->imovel,
+                        false,
+                        'Informações de operações relacionadas a bens imóveis, exceto obras.',
+                        false
+                    );
+                }
+
+
+                if (isset($rps->det[$d->nItem]->IBSCBS->valores)) {
+                    // Informações relativas aos valores do serviço prestado para IBS e CBS
+                    $IbsValores = self::$dom->createElement('valores');
+
+                    if (isset($rps->det[$d->nItem]->IBSCBS->valores->gReeRepRes)) {
+                        self::$dom->addChild(
+                            $IbsValores,
+                            'gReeRepRes',
+                            $rps->det[$d->nItem]->IBSCBS->valores->gReeRepRes,
+                            false,
+                            'Informações relativas a valores incluídos neste documento e recebidos por motivo de estarem relacionadas a operações de terceiros, objeto de reembolso, repasse ou ressarcimento pelo recebedor, já tributados e aqui referenciados',
+                            false
+                        );
+                    }
+
+                    // Grupo de informações relacionados aos tributos IBS e CBS
+                    $trib = self::$dom->createElement('trib');
+                    $gIBSCBS = self::$dom->createElement('gIBSCBS');
+
+                    self::$dom->addChild(
+                        $gIBSCBS,
+                        'CST',
+                        $rps->det[$d->nItem]->IBSCBS->valores->trib->gIBSCBS->CST,
+                        true,
+                        'Código de Situação Tributária do IBS e da CBS',
+                        true
+                    );
+
+                    self::$dom->addChild(
+                        $gIBSCBS,
+                        'cClassTrib',
+                        $rps->det[$d->nItem]->IBSCBS->valores->trib->gIBSCBS->cClassTrib,
+                        true,
+                        'Código de Classificação Tributária do IBS e da CBS',
+                        true
+                    );
+
+                    self::$dom->appChild($trib, $gIBSCBS, 'Adicionando tag gIBSCBS ao trib do valores do IBSCBS.');
+                    self::$dom->appChild($IbsValores, $trib, 'Adicionando tag trib ao Valores do IBSCBS.');
+                    self::$dom->appChild($IBSCBS, $IbsValores, 'Adicionando tag valores ao IBSCBS, dentro do det.');
+                }
+
+                self::$dom->appChild($det, $IBSCBS, 'Adicionando tag Endereco do Prestador');
+            }
+
 
             //ISSST
             if (isset($rps->ISSST[$d->nItem])) {
@@ -835,9 +997,51 @@ class RenderRPS
 
                 self::$dom->appChild($det, $ISSST, 'Adicionando tag ISSQN retido em um item de serviço da NFS-e');
             }
+
+
             //Serviço da NFS-e
             self::$dom->appChild($infRPS, $det, 'Adicionando tag Transportadora em infRPS');
         }
+
+        // TAG <notaNacional>
+        $notaNacional = self::$dom->createElement('notaNacional');
+        self::$dom->addChild(
+            $notaNacional, // Dom Element
+            'chaveAcessoNacional', // Tag name
+            $rps->notaNacional->chaveAcessoNacional, // Tag content
+            true, // Obrigatorio
+            'Chave de acesso da nota nacional', // Descricao
+            true // Force (se nao preenchido exibe aviso: Preenchimento obrigatorio)
+        );
+
+        self::$dom->addChild(
+            $notaNacional, // Dom Element
+            'numero', // Tag name
+            $rps->notaNacional->numero, // Tag content
+            true, // Obrigatorio
+            'Número da Nota Fiscal Nacional', // Descricao
+            true // Force (se nao preenchido exibe aviso: Preenchimento obrigatorio)
+        );
+
+        self::$dom->addChild(
+            $notaNacional, // Dom Element
+            'cTribNac', // Tag name
+            $rps->notaNacional->cTribNac, // Tag content
+            true, // Obrigatorio
+            'Código de tributação nacional do ISSQN', // Descricao
+            true // Force (se nao preenchido exibe aviso: Preenchimento obrigatorio)
+        );
+
+        self::$dom->addChild(
+            $notaNacional, // Dom Element
+            'cTribMun', // Tag name
+            $rps->notaNacional->cTribMun, // Tag content
+            true, // Obrigatorio
+            'Código de tributação municipal do ISSQN', // Descricao
+            true // Force (se nao preenchido exibe aviso: Preenchimento obrigatorio)
+        );
+
+        self::$dom->appChild($infRPS, $notaNacional, 'Adicionando tag notaNacional em infRPS');
 
         //Totais
         $total = self::$dom->createElement('total');
@@ -915,10 +1119,11 @@ class RenderRPS
             'Valor total ISS ST ',
             false
         );
-        
+
         self::$dom->appChild($total, $ISS, 'Adicionando tag ISS');
         self::$dom->appChild($infRPS, $total, 'Adicionando tag Total em infRPS');
-        
+
+
         //Faturas
         if (isset($rps->faturas)) {
             $faturas = self::$dom->createElement('faturas');
@@ -960,7 +1165,7 @@ class RenderRPS
             }
             self::$dom->appChild($infRPS, $faturas, 'Adicionando tag fatura em infRPS');
         }
-        
+
         //Informações adicionais
         self::$dom->addChild(
             $infRPS,

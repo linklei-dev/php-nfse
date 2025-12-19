@@ -2,7 +2,7 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
       xmlns:ds="http://www.w3.org/2000/09/xmldsig#" attributeFormDefault="unqualified"
       elementFormDefault="qualified">
-      <xs:import namespace="http://www.w3.org/2000/09/xmldsig#" 
+      <xs:import namespace="http://www.w3.org/2000/09/xmldsig#"
             schemaLocation="xmldsig-core-schema_v1.01.xsd"/>
 
       <!-- ***********************************************************  -->
@@ -405,7 +405,7 @@
                <!-- Hora da solicitacao -->
               <xs:element name="horaSolicitacao" type="THora" minOccurs="1" maxOccurs="1"/>
               <!-- Conteudo das inutilizacoes -->
-              <xs:element ref="numerosInutilizados" minOccurs="1" maxOccurs="1"/>  
+              <xs:element ref="numerosInutilizados" minOccurs="1" maxOccurs="1"/>
                    <!-- Assinatura digital   -->
               <xs:element ref="ds:Signature" minOccurs="0" maxOccurs="1"/>
               </xs:sequence>
@@ -502,13 +502,16 @@
                   <!-- Dados de tomador da NFSe -->
                   <xs:element ref="TomS"/>
                   <!-- Dados do local de entrega  -->
-                  <xs:element ref="dadosDaObra" minOccurs="0" maxOccurs="1" />  
+                  <xs:element ref="dadosDaObra" minOccurs="0" maxOccurs="1" />
                   <!-- Dados da transportadora  -->
-                  <xs:element ref="transportadora" minOccurs="0" maxOccurs="1" />   
+                  <xs:element ref="transportadora" minOccurs="0" maxOccurs="1" />
                   <!-- Detalhes dos itens de servico da NFSe -->
                   <xs:element ref="det" minOccurs="1"  maxOccurs="999"/>
                   <!-- Dados de totalizacao da NFSe -->
                   <xs:element ref="total"/>
+                  <!-- Dados de notaNacional da NFSe -->
+                  <xs:element ref="notaNacional"/>
+
                   <!-- Dados de cobranca da NFSe -->
                   <xs:element ref="faturas" minOccurs="0" maxOccurs="1"/>
                   <!-- Local de tributacao a ser exibido na area de Informacoes Adicionais -->
@@ -573,6 +576,12 @@
                  <xs:element name="serierps" type="TSerie" minOccurs="0"  maxOccurs="1"/>
                  <!-- Data de emissao do RPS papel que originou a nota  -->
                  <xs:element name="dataEmissaoRpsPapel" type="TData" minOccurs="0"  maxOccurs="1"/>
+
+                 <!-- Codigo IBG da cidade de prestacao do servico -->
+                 <xs:element name="cLocPrestacao" type="TString" minOccurs="1"  maxOccurs="1"/>
+                 <!-- Codigo IBG do pais de prestacao do servico -->
+                 <xs:element name="cPaisPrestacao" type="TString" minOccurs="1"  maxOccurs="1"/>
+
              </xs:sequence>
          </xs:complexType>
       </xs:element>
@@ -601,12 +610,12 @@
                   <!-- Fone alternativo -->
                   <xs:element name="fone2" type="TFone" minOccurs="0" maxOccurs="1"/>
                   <!-- Inscricao Estadual  -->
-                  <xs:element name="IE" type="TString15" minOccurs="0" maxOccurs="1"/> 
+                  <xs:element name="IE" type="TString15" minOccurs="0" maxOccurs="1"/>
                   <!-- Regime tributario  -->
                   <xs:element name="regimeTrib" type="TCharInt"/>
               </xs:sequence>
           </xs:complexType>
-      </xs:element> 
+      </xs:element>
 
       <!-- Definicao da estrutura de dados para endereco de um emitente de uma NFSe -->
       <xs:element name="end">
@@ -632,9 +641,9 @@
                   <xs:element name="cPais" type="TcPais" />
                   <!-- Pais  -->
                   <xs:element name="xPais" type="TString100" />
-              </xs:sequence>  
+              </xs:sequence>
           </xs:complexType>
-      </xs:element>   
+      </xs:element>
 
 
       <!-- Definicao da estrutura de dados para tomador de uma NFSe -->
@@ -772,7 +781,8 @@
                   <!-- Ordem sequencial do item na nota  -->
                   <xs:element name="nItem" type="TOrdemSeq"/>
                   <xs:element ref="serv"/>
-                  <xs:element ref="ISSST" minOccurs="0" maxOccurs="1"/>   
+                  <xs:element ref="ISSST" minOccurs="0" maxOccurs="1"/>
+                  <!--<xs:element ref="IBSCBS" />-->
               </xs:sequence>
           </xs:complexType>
       </xs:element>
@@ -782,66 +792,70 @@
       <xs:element name="serv">
           <xs:complexType>
               <xs:sequence>
-                  <!-- Codigo municipal do servico  -->
-                  <xs:element name="cServ" type="TString60"/>
-                  <!-- Codigo do servico conforme Lei 116  -->
-                  <xs:element name="cLCServ" type="TLCServ"/>
-                  <!-- Descricao do serviço  -->
-                  <xs:element name="xServ" type="TString256"/>
-                  <!-- Local de tributação do servico -->
-                  <xs:element name="localTributacao" type="TCodMunIBGE"  minOccurs="0" maxOccurs="1"/>
-                  <!-- Local da verificação do resultado do servico  -->
-                  <xs:element name="localVerifResServ" type="TCharInt"/>
-                  <!-- Unidade do servico  -->
-                  <xs:element name="uTrib" type="TString2"/>
-                  <!-- Quantidade do servico -->
-                  <xs:element name="qTrib" type="TDec_1302"/>
-                  <!-- Valor unitario -->
-                  <xs:element name="vUnit" type="TDec_1304"/>
-                  <!-- Valor do servico -->
-                  <xs:element name="vServ" type="TDec_1302"/>
-                  <!-- Valor de desconto -->
-                  <xs:element name="vDesc" type="TDec_1302" minOccurs="0" maxOccurs="1"/>
-                  <!-- Valor da base de calculo de ISSQN  -->
-                  <xs:element name="vBCISS" type="TDec_1302" minOccurs="0" maxOccurs="1"/>
-                  <!-- Aliquota do ISSQN -->
-                  <xs:element name="pISS" type="TDec_0302" minOccurs="0" maxOccurs="1"/>
-                  <!-- Valor do ISSQN -->
-            <xs:element name="vISS" type="TDec_1302" minOccurs="0" maxOccurs="1"/>
-                  <!-- Valor da base de calculo de retencao de INSS  -->
-                  <xs:element name="vBCINSS" type="TDec_1302" minOccurs="0" maxOccurs="1"/>
-                   <!-- Percentual de retencao de INSS do item de servico  -->
-            <xs:element name="pRetINSS" type="TDec_1302" minOccurs="0" maxOccurs="1"/>
-                  <!-- Valor de retencao de INSS do item de servico  -->
-            <xs:element name="vRetINSS" type="TDec_1302" minOccurs="0" maxOccurs="1"/>
-                  <!-- Valor de redução da base de calculo  -->
-                  <xs:element name="vRed" type="TDec_1302" minOccurs="0" maxOccurs="1"/>
-                   <!-- Valor da base de calculo da retencao de IR  -->
-                  <xs:element name="vBCRetIR" type="TDec_1302" minOccurs="0" maxOccurs="1"/>
-                  <!-- Percentual  -->
-            <xs:element name="pRetIR" type="TDec_0302" minOccurs="0" maxOccurs="1"/>
-                  <!-- Valor  -->
-            <xs:element name="vRetIR" type="TDec_1302" minOccurs="0" maxOccurs="1"/>
-                  <!-- Valor da base de calculo de retencao de COFINS  -->
-                  <xs:element name="vBCCOFINS" type="TDec_1302" minOccurs="0" maxOccurs="1"/>
-                  <!-- Percentual  -->
-            <xs:element name="pRetCOFINS" type="TDec_0302" minOccurs="0" maxOccurs="1"/>
-                  <!-- Valor  -->
-            <xs:element name="vRetCOFINS" type="TDec_1302" minOccurs="0" maxOccurs="1"/>
-                  <!-- Valor da base de calculo de retencao de CSLL  -->
-                  <xs:element name="vBCCSLL" type="TDec_1302" minOccurs="0" maxOccurs="1"/>
-                  <!-- Percentual  -->
-            <xs:element name="pRetCSLL" type="TDec_0302" minOccurs="0" maxOccurs="1"/>
-                  <!-- Valor  -->
-            <xs:element name="vRetCSLL" type="TDec_1302" minOccurs="0" maxOccurs="1"/>
-                  <!-- Valor da base de calculo de retencao de PIS-PASEP  -->
-                  <xs:element name="vBCPISPASEP" type="TDec_1302" minOccurs="0" maxOccurs="1"/>
-                  <!-- Percentual  -->
-            <xs:element name="pRetPISPASEP" type="TDec_0302" minOccurs="0" maxOccurs="1"/>
-                  <!-- Valor  -->
-            <xs:element name="vRetPISPASEP" type="TDec_1302" minOccurs="0" maxOccurs="1"/>
-      <!-- Valor total Aproximado de tributos federais -->
-            <xs:element name="totalAproxTribServ" type="TDec_1302" minOccurs="0" maxOccurs="1"/>
+                <!-- Codigo municipal do servico  -->
+                <xs:element name="cServ" type="TString60"/>
+                <!-- Codigo do servico conforme Lei 116  -->
+                <xs:element name="cLCServ" type="TLCServ"/>
+                <!-- Descricao do serviço  -->
+                <xs:element name="xServ" type="TString256"/>
+                <!-- Local de tributação do servico -->
+                <xs:element name="localTributacao" type="TCodMunIBGE"  minOccurs="0" maxOccurs="1"/>
+                <!-- Local da verificação do resultado do servico  -->
+                <xs:element name="localVerifResServ" type="TCharInt"/>
+                <!-- Unidade do servico  -->
+                <xs:element name="uTrib" type="TString2"/>
+                <!-- Quantidade do servico -->
+                <xs:element name="qTrib" type="TDec_1302"/>
+                <!-- Valor unitario -->
+                <xs:element name="vUnit" type="TDec_1304"/>
+                <!-- Valor do servico -->
+                <xs:element name="vServ" type="TDec_1302"/>
+                <!-- Valor de desconto -->
+                <xs:element name="vDesc" type="TDec_1302" minOccurs="0" maxOccurs="1"/>
+                <!-- Valor da base de calculo de ISSQN  -->
+                <xs:element name="vBCISS" type="TDec_1302" minOccurs="0" maxOccurs="1"/>
+                <!-- Aliquota do ISSQN -->
+                <xs:element name="pISS" type="TDec_0302" minOccurs="0" maxOccurs="1"/>
+                <!-- Valor do ISSQN -->
+                <xs:element name="vISS" type="TDec_1302" minOccurs="0" maxOccurs="1"/>
+                <!-- Valor da base de calculo de retencao de INSS  -->
+                <xs:element name="vBCINSS" type="TDec_1302" minOccurs="0" maxOccurs="1"/>
+                <!-- Percentual de retencao de INSS do item de servico  -->
+                <xs:element name="pRetINSS" type="TDec_1302" minOccurs="0" maxOccurs="1"/>
+                <!-- Valor de retencao de INSS do item de servico  -->
+                <xs:element name="vRetINSS" type="TDec_1302" minOccurs="0" maxOccurs="1"/>
+                <!-- Valor de redução da base de calculo  -->
+                <xs:element name="vRed" type="TDec_1302" minOccurs="0" maxOccurs="1"/>
+                <!-- Valor da base de calculo da retencao de IR  -->
+                <xs:element name="vBCRetIR" type="TDec_1302" minOccurs="0" maxOccurs="1"/>
+                <!-- Percentual  -->
+                <xs:element name="pRetIR" type="TDec_0302" minOccurs="0" maxOccurs="1"/>
+                <!-- Valor  -->
+                <xs:element name="vRetIR" type="TDec_1302" minOccurs="0" maxOccurs="1"/>
+                <!-- Valor da base de calculo de retencao de COFINS  -->
+                <xs:element name="vBCCOFINS" type="TDec_1302" minOccurs="0" maxOccurs="1"/>
+                <!-- Percentual  -->
+                <xs:element name="pRetCOFINS" type="TDec_0302" minOccurs="0" maxOccurs="1"/>
+                <!-- Valor  -->
+                <xs:element name="vRetCOFINS" type="TDec_1302" minOccurs="0" maxOccurs="1"/>
+                <!-- Valor da base de calculo de retencao de CSLL  -->
+                <xs:element name="vBCCSLL" type="TDec_1302" minOccurs="0" maxOccurs="1"/>
+                <!-- Percentual  -->
+                <xs:element name="pRetCSLL" type="TDec_0302" minOccurs="0" maxOccurs="1"/>
+                <!-- Valor  -->
+                <xs:element name="vRetCSLL" type="TDec_1302" minOccurs="0" maxOccurs="1"/>
+                <!-- Valor da base de calculo de retencao de PIS-PASEP  -->
+                <xs:element name="vBCPISPASEP" type="TDec_1302" minOccurs="0" maxOccurs="1"/>
+                <!-- Percentual  -->
+                <xs:element name="pRetPISPASEP" type="TDec_0302" minOccurs="0" maxOccurs="1"/>
+                <!-- Valor  -->
+                <xs:element name="vRetPISPASEP" type="TDec_1302" minOccurs="0" maxOccurs="1"/>
+                <!-- Valor total Aproximado de tributos federais -->
+                <xs:element name="totalAproxTribServ" type="TDec_1302" minOccurs="0" maxOccurs="1"/>
+                <!-- Codigo CST Pis Cofins -->
+                <xs:element name="CSTPisCofins" type="TSTipoCST" minOccurs="1" maxOccurs="1" />
+                <!-- Codigo cNBS -->
+                <xs:element name="cNBS" type="TSCodigoNbs" minOccurs="1" maxOccurs="1" />
               </xs:sequence>
           </xs:complexType>
       </xs:element>
@@ -862,6 +876,60 @@
               </xs:sequence>
           </xs:complexType>
       </xs:element>
+
+    <!-- Definicao da estrutura de dados para IBSCBS dentro do det em uma NFSe  -->
+    <xs:element name="IBSCBS">
+        <xs:complexType>
+            <xs:sequence>
+                <!-- Indicador da finalidade da emissão de NFS-e, 0 = NFS-e regular  -->
+                <xs:element name="finNFSe" type="TCharInt" minOccurs="1" maxOccurs="1"/>
+                <!-- Indica operação de uso ou consumo pessoal. (art. 57), 0 = Não, 1 = Sim  -->
+                <xs:element name="indFinal" type="TCharInt" minOccurs="1" maxOccurs="1"/>
+                <!-- Código indicador da operação de fornecimento, onforme tabela "código indicador de operação"  -->
+                <xs:element name="cIndOp" type="TString6" minOccurs="1" maxOccurs="1"/>
+                <!-- Tipo de Operação com Entes Governamentais ou outros serviços sobre bens imóveis: -->
+                <xs:element name="tpOper" type="TCharInt" minOccurs="0" maxOccurs="1"/>
+                <!-- A respeito do Destinatário dos serviços, 0 = destinatario é o proprio tomadar,  = destinatario não é o proprio tomador/adquirinte. -->
+                <xs:element name="indDest" type="TCharInt" minOccurs="1" maxOccurs="1"/>
+                <!-- Valores do IBSCBS -->
+                <xs:element ref="valores" minOccurs="1" maxOccurs="1"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Definicao da estrutura de Valores para IBSCBS dentro do det em uma NFSe  -->
+    <xs:element name="valores">
+        <xs:complexType>
+            <xs:sequence>
+                <!-- Informações relativas a valores incluídos neste documento e recebidos por motivo de estarem relacionadas a operações de terceiros, objeto de reembolso, repasse ou ressarcimento pelo recebedor, já tributados e aqui referenciados -->
+                <xs:element name="gReeRepRes" type="TString" minOccurs="0" maxOccurs="1"/>
+                <!-- Informacoes de trib para os valores do IBSCBS do det -->
+                <xs:element ref="trib" minOccurs="1" maxOccurs="1"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Definicao da estrutura de trib para Valores do IBSCBS dentro do det em uma NFSe  -->
+    <xs:element name="trib">
+        <xs:complexType>
+            <xs:sequence>
+                <!-- Informacoes de gIBSCBS para o trib dentro de valores do IBSCBS do det -->
+                <xs:element ref="gIBSCBS" minOccurs="1" maxOccurs="1"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Definicao da estrutura de gIBSCBS para o trib dentro de Valores do IBSCBS dentro do det em uma NFSe  -->
+    <xs:element name="gIBSCBS">
+        <xs:complexType>
+            <xs:sequence>
+                <!-- Código de Situação Tributária do IBS e da CBS -->
+                <xs:element name="CST" type="TString3" minOccurs="1" maxOccurs="1"/>
+                <!-- Código de Classificação Tributária do IBS e da CBS -->
+                <xs:element name="cClassTrib" type="TString6" minOccurs="1" maxOccurs="1"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
 
       <!-- Definicao da estrutura de dados para totalizacoes em uma NFSe  -->
       <xs:element name="total">
@@ -889,7 +957,119 @@
           </xs:complexType>
       </xs:element>
 
+    <!-- Definicao da estrutura de dados para notaNacional em uma NFSe -->
+    <xs:element name="notaNacional">
+        <xs:complexType>
+            <xs:sequence>
+                <!-- Chave de acesso da nota nacional  -->
+                <xs:element name="chaveAcessoNacional" type="TString50" />
+                <!-- Numero sequencial da nota -->
+                <xs:element name="numero" type="TOrdemSeq"/>
+                <!-- Codigo de tributacao nacional do ISSQN -->
+                <xs:element name="cTribNac" type="TString6"/>
+                <!-- Código de tributação municipal do ISSQN -->
+                <xs:element name="cTribMun" type="TString6"/>
+                <!-- IBSCCBS da nota nacional -->
 
+                <xs:element name="IBSCBS">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="cLocalidadeIncid" type="TCodMunIBGE" minOccurs="1" maxOccurs="1"/>
+                            <xs:element name="xLocalidadeIncid" type="TString256" minOccurs="1" maxOccurs="1"/>
+                            <xs:element name="pRedutor" type="TDec_1302" minOccurs="1" maxOccurs="1"/>
+
+                            <xs:element name="valores">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="vBC" type="TDec_1302" minOccurs="1" maxOccurs="1"/>
+                                        <xs:element name="vCalcReeRepRes" type="TDec_1302" minOccurs="0" maxOccurs="1"/>
+
+                                        <xs:element name="uf">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="pIBSUF" type="TDec_1302" minOccurs="1" maxOccurs="1"/>
+                                                    <xs:element name="pRedAliqUF" type="TDec_1302" minOccurs="1" maxOccurs="1"/>
+                                                    <xs:element name="pAliqEfetUF" type="TDec_1302" minOccurs="1" maxOccurs="1"/>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+
+                                        <xs:element name="mun">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="pIBSMun" type="TDec_1302" minOccurs="1" maxOccurs="1"/>
+                                                    <xs:element name="pRedAliqMun" type="TDec_1302" minOccurs="1" maxOccurs="1"/>
+                                                    <xs:element name="pAliqEfetMun" type="TDec_1302" minOccurs="1" maxOccurs="1"/>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+
+                                        <xs:element name="fed">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="pCBS" type="TDec_1302" minOccurs="1" maxOccurs="1"/>
+                                                    <xs:element name="pRedAliqCBS" type="TDec_1302" minOccurs="1" maxOccurs="1"/>
+                                                    <xs:element name="pAliqEfetCBS" type="TDec_1302" minOccurs="1" maxOccurs="1"/>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+
+                            <xs:element name="totCIBS">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="vTotNF" type="TDec_1302" minOccurs="1" maxOccurs="1"/>
+
+                                        <xs:element name="gIBS">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="vIBSTot" type="TDec_1302" minOccurs="1" maxOccurs="1"/>
+
+                                                    <xs:element name="gIBSUFTot">
+                                                        <xs:complexType>
+                                                            <xs:sequence>
+                                                                <xs:element name="vDifUF" type="TDec_1302" minOccurs="1" maxOccurs="1"/>
+                                                                <xs:element name="vIBSUF" type="TDec_1302" minOccurs="1" maxOccurs="1"/>
+                                                            </xs:sequence>
+                                                        </xs:complexType>
+                                                    </xs:element>
+
+                                                    <xs:element name="gIBSMunTot">
+                                                        <xs:complexType>
+                                                            <xs:sequence>
+                                                                <xs:element name="vDifMun" type="TDec_1302" minOccurs="1" maxOccurs="1"/>
+                                                                <xs:element name="vIBSMun" type="TDec_1302" minOccurs="1" maxOccurs="1"/>
+                                                            </xs:sequence>
+                                                        </xs:complexType>
+                                                    </xs:element>
+
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+
+                                        <xs:element name="gCBS">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="vDifCBS" type="TDec_1302" minOccurs="1" maxOccurs="1"/>
+                                                    <xs:element name="vCBS" type="TDec_1302" minOccurs="1" maxOccurs="1"/>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
 
       <!-- Definicao da estrutura de dados para valores do ISSQN em uma NFSe  -->
       <xs:element name="ISS">
@@ -946,7 +1126,7 @@
                   <!-- Data de vencimento   -->
                   <xs:element name="dVenc" type="TData" minOccurs="0" maxOccurs="1"/>
                   <!-- Valor da fatura  -->
-                  <xs:element name="vFat" type="TDec_1302" />   
+                  <xs:element name="vFat" type="TDec_1302" />
                   <!-- Tipo vencimento fatura  -->
                   <xs:element name="tipoVencFat" type="TCharInt" minOccurs="0" maxOccurs="1"/>
                   <!-- Descrição tipo vencimento fatura  -->
@@ -961,7 +1141,7 @@
 
 
       <!-- Tipo para Codigo Postal  -->
-      <xs:simpleType name="TCep"> 
+      <xs:simpleType name="TCep">
   <xs:annotation>
     <xs:documentation>Tipo para Codigo Postal</xs:documentation>
   </xs:annotation>
@@ -1071,7 +1251,7 @@
   <xs:restriction base="xs:string">
           <xs:minLength value="0"/>
     <xs:whiteSpace value="preserve"/>
-      <xs:pattern value="0|0\.[0-9]{2}|[1-9]{1}[0-9]{0,12}(\.[0-9]{2})?"/>      
+      <xs:pattern value="0|0\.[0-9]{2}|[1-9]{1}[0-9]{0,12}(\.[0-9]{2})?"/>
   </xs:restriction>
      </xs:simpleType>
 
@@ -1180,7 +1360,7 @@
     <xs:pattern value="[0-9]{0,9}"/>
   </xs:restriction>
       </xs:simpleType>
-            
+
   <!-- Tipo para numeros inteiros   -->
   <xs:simpleType name="TNum">
   <xs:annotation>
@@ -1229,7 +1409,7 @@
     <xs:documentation>Tipo para ordem sequencial de itens </xs:documentation>
   </xs:annotation>
         <xs:restriction base="xs:positiveInteger">
-    <xs:maxInclusive value="999"/>
+        <xs:maxInclusive value="999999999"/>
         </xs:restriction>
       </xs:simpleType>
 
@@ -1282,7 +1462,7 @@
     <xs:maxInclusive value="999"/>
         </xs:restriction>
       </xs:simpleType>
- 
+
       <!-- Tipo para situacao de uma NFSe -->
       <xs:simpleType name="TSituacaoNFSe">
   <xs:annotation>
@@ -1451,7 +1631,25 @@
     <xs:restriction base="xs:string">
     </xs:restriction>
   </xs:simpleType>
-  
-  
+
+    <!-- Tipo para string com formato TSTipoCST   -->
+    <xs:simpleType name="TSTipoCST">
+        <xs:annotation>
+            <xs:documentation>Tipo para Código de Situação Tributária do PIS/COFINS (CST)</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:maxLength value="2" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- Tipo para string com formato TSCodigoNbs   -->
+    <xs:simpleType name="TSCodigoNbs">
+        <xs:annotation>
+            <xs:documentation>Tipo para Código NBS</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:maxLength value="9" />
+        </xs:restriction>
+    </xs:simpleType>
 
 </xs:schema>

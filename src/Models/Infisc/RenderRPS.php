@@ -160,6 +160,25 @@ class RenderRPS
             "Empreitada Global",
             true
         );
+
+        self::$dom->addChild(
+            $identificacaoRps,
+            'cLocPrestacao',
+            $rps->Id->cLocPrestacao,
+            true,
+            "Local da prestação do serviço",
+            true
+        );
+
+        self::$dom->addChild(
+            $identificacaoRps,
+            'cPaisPrestacao',
+            $rps->Id->cPaisPrestacao,
+            true,
+            "Código do país onde ocorreu a prestação do serviço",
+            true
+        );
+
         self::$dom->appChild($infRPS, $identificacaoRps, 'Adicionando tag IdentificacaoRPS');
 
         $prestador = self::$dom->createElement('prest');
@@ -1003,46 +1022,6 @@ class RenderRPS
             self::$dom->appChild($infRPS, $det, 'Adicionando tag Transportadora em infRPS');
         }
 
-        // TAG <notaNacional>
-        $notaNacional = self::$dom->createElement('notaNacional');
-        self::$dom->addChild(
-            $notaNacional, // Dom Element
-            'chaveAcessoNacional', // Tag name
-            $rps->notaNacional->chaveAcessoNacional, // Tag content
-            true, // Obrigatorio
-            'Chave de acesso da nota nacional', // Descricao
-            true // Force (se nao preenchido exibe aviso: Preenchimento obrigatorio)
-        );
-
-        self::$dom->addChild(
-            $notaNacional, // Dom Element
-            'numero', // Tag name
-            $rps->notaNacional->numero, // Tag content
-            true, // Obrigatorio
-            'Número da Nota Fiscal Nacional', // Descricao
-            true // Force (se nao preenchido exibe aviso: Preenchimento obrigatorio)
-        );
-
-        self::$dom->addChild(
-            $notaNacional, // Dom Element
-            'cTribNac', // Tag name
-            $rps->notaNacional->cTribNac, // Tag content
-            true, // Obrigatorio
-            'Código de tributação nacional do ISSQN', // Descricao
-            true // Force (se nao preenchido exibe aviso: Preenchimento obrigatorio)
-        );
-
-        self::$dom->addChild(
-            $notaNacional, // Dom Element
-            'cTribMun', // Tag name
-            $rps->notaNacional->cTribMun, // Tag content
-            true, // Obrigatorio
-            'Código de tributação municipal do ISSQN', // Descricao
-            true // Force (se nao preenchido exibe aviso: Preenchimento obrigatorio)
-        );
-
-        self::$dom->appChild($infRPS, $notaNacional, 'Adicionando tag notaNacional em infRPS');
-
         //Totais
         $total = self::$dom->createElement('total');
         self::$dom->addChild(
@@ -1122,6 +1101,256 @@ class RenderRPS
 
         self::$dom->appChild($total, $ISS, 'Adicionando tag ISS');
         self::$dom->appChild($infRPS, $total, 'Adicionando tag Total em infRPS');
+
+        // TAG <notaNacional>
+        $notaNacional = self::$dom->createElement('notaNacional');
+        self::$dom->addChild(
+            $notaNacional, // Dom Element
+            'chaveAcessoNacional', // Tag name
+            $rps->notaNacional->chaveAcessoNacional, // Tag content
+            true, // Obrigatorio
+            'Chave de acesso da nota nacional', // Descricao
+            true // Force (se nao preenchido exibe aviso: Preenchimento obrigatorio)
+        );
+
+        self::$dom->addChild(
+            $notaNacional, // Dom Element
+            'numero', // Tag name
+            $rps->notaNacional->numero, // Tag content
+            true, // Obrigatorio
+            'Número da Nota Fiscal Nacional', // Descricao
+            true // Force (se nao preenchido exibe aviso: Preenchimento obrigatorio)
+        );
+
+        self::$dom->addChild(
+            $notaNacional, // Dom Element
+            'cTribNac', // Tag name
+            $rps->notaNacional->cTribNac, // Tag content
+            true, // Obrigatorio
+            'Código de tributação nacional do ISSQN', // Descricao
+            true // Force (se nao preenchido exibe aviso: Preenchimento obrigatorio)
+        );
+
+        self::$dom->addChild(
+            $notaNacional, // Dom Element
+            'cTribMun', // Tag name
+            $rps->notaNacional->cTribMun, // Tag content
+            true, // Obrigatorio
+            'Código de tributação municipal do ISSQN', // Descricao
+            true // Force (se nao preenchido exibe aviso: Preenchimento obrigatorio)
+        );
+
+        // TAG <IBSCBS>
+        $IBSCBS = self::$dom->createElement('IBSCBS');
+        self::$dom->addChild(
+            $IBSCBS, // Dom Element
+            'cLocalidadeIncid', // Tag name
+            $rps->notaNacional->IBSCBS->cLocalidadeIncid, // Tag content
+            true, // Obrigatorio
+            'Código IBGE da localidade de incidência do IBS/CBS (local da operação)', // Descricao
+            true // Force (se nao preenchido exibe aviso: Preenchimento obrigatorio)
+        );
+        self::$dom->addChild(
+            $IBSCBS, // Dom Element
+            'xLocalidadeIncid', // Tag name
+            $rps->notaNacional->IBSCBS->xLocalidadeIncid, // Tag content
+            true, // Obrigatorio
+            'Nome da localidade de incidência do IBS/CBS', // Descricao
+            true // Force (se nao preenchido exibe aviso: Preenchimento obrigatorio)
+        );
+        self::$dom->addChild(
+            $IBSCBS, // Dom Element
+            'pRedutor', // Tag name
+            $rps->notaNacional->IBSCBS->pRedutor, // Tag content
+            true, // Obrigatorio
+            'Percentual de redução de alíquota em compra governamental', // Descricao
+            true // Force (se nao preenchido exibe aviso: Preenchimento obrigatorio)
+        );
+
+        // TAG <valores>
+        $valores = self::$dom->createElement('valores');
+        self::$dom->addChild(
+            $valores, // Dom Element
+            'vBC', // Tag name
+            $rps->notaNacional->IBSCBS->valores->vBC, // Tag content
+            true, // Obrigatorio
+            'Valor da base de cálculo (BC) do IBS/CBS antes das reduções para cálculo do tributo bruto.', // Descricao
+            true // Force (se nao preenchido exibe aviso: Preenchimento obrigatorio)
+        );
+
+        // TAG <uf>
+        $uf = self::$dom->createElement('uf');
+        self::$dom->addChild(
+            $uf, // Dom Element
+            'pIBSUF', // Tag name
+            $rps->notaNacional->IBSCBS->valores->uf->pIBSUF, // Tag content
+            true, // Obrigatorio
+            'Alíquota da UF para IBS da localidade de incidência parametrizada no sistema', // Descricao
+            true // Force (se nao preenchido exibe aviso: Preenchimento obrigatorio)
+        );
+        self::$dom->addChild(
+            $uf, // Dom Element
+            'pRedAliqUF', // Tag name
+            $rps->notaNacional->IBSCBS->valores->uf->pRedAliqUF, // Tag content
+            false, // Obrigatorio
+            'Percentual de redução de alíquota estadual', // Descricao
+            false // Force (se nao preenchido exibe aviso: Preenchimento obrigatorio)
+        );
+        self::$dom->addChild(
+            $uf, // Dom Element
+            'pAliqEfetUF', // Tag name
+            $rps->notaNacional->IBSCBS->valores->uf->pAliqEfetUF, // Tag content
+            true, // Obrigatorio
+            'pAliqEfetUF = pIBSUF x (1 - pRedAliqUF) x (1 - pRedutor). Se pRedAliqUF não for informado, então pAliqEfetUF é a própria pIBSUF', // Descricao
+            true // Force (se nao preenchido exibe aviso: Preenchimento obrigatorio)
+        );
+        self::$dom->appChild($valores, $uf, 'Adicionando tag uf em valores');
+
+        // TAG <mun>
+        $mun = self::$dom->createElement('mun');
+        self::$dom->addChild(
+            $mun, // Dom Element
+            'pIBSMun', // Tag name
+            $rps->notaNacional->IBSCBS->valores->mun->pIBSMun, // Tag content
+            true, // Obrigatorio
+            'Alíquota do Município para IBS da localidade de incidência parametrizada no sistema', // Descricao
+            true // Force (se nao preenchido exibe aviso: Preenchimento obrigatorio)
+        );
+        self::$dom->addChild(
+            $mun, // Dom Element
+            'pRedAliqMun', // Tag name
+            $rps->notaNacional->IBSCBS->valores->mun->pRedAliqMun, // Tag content
+            false, // Obrigatorio
+            'Percentual de redução de alíquota municipal', // Descricao
+            false // Force (se nao preenchido exibe aviso: Preenchimento obrigatorio)
+        );
+        self::$dom->addChild(
+            $mun, // Dom Element
+            'pAliqEfetMun', // Tag name
+            $rps->notaNacional->IBSCBS->valores->mun->pAliqEfetMun, // Tag content
+            true, // Obrigatorio
+            'pAliqEfetMun = pIBSMun x (1 - pRedAliqMun) x (1 - pRedutor). Se pRedAliqMun não for informado, então pAliqEfetMun é a própria pIBSMun', // Descricao
+            true // Force (se nao preenchido exibe aviso: Preenchimento obrigatorio)
+        );
+        self::$dom->appChild($valores, $mun, 'Adicionando tag mun em valores');
+
+        // TAG <fed>
+        $fed = self::$dom->createElement('fed');
+        self::$dom->addChild(
+            $fed, // Dom Element
+            'pCBS', // Tag name
+            $rps->notaNacional->IBSCBS->valores->fed->pCBS, // Tag content
+            true, // Obrigatorio
+            'Alíquota da União para CBS parametrizada no sistema', // Descricao
+            true // Force (se nao preenchido exibe aviso: Preenchimento obrigatorio)
+        );
+        self::$dom->addChild(
+            $fed, // Dom Element
+            'pRedAliqCBS', // Tag name
+            $rps->notaNacional->IBSCBS->valores->fed->pRedAliqCBS, // Tag content
+            false, // Obrigatorio
+            'Percentual da redução de alíquota da CBS', // Descricao
+            false // Force (se nao preenchido exibe aviso: Preenchimento obrigatorio)
+        );
+        self::$dom->addChild(
+            $fed, // Dom Element
+            'pAliqEfetCBS', // Tag name
+            $rps->notaNacional->IBSCBS->valores->fed->pAliqEfetCBS, // Tag content
+            true, // Obrigatorio
+            'pAliqEfetCBS = pCBS x (1 - pRedAliqCBS) x (1 - pRedutor). Se pRedAliqCBS não for informado, então pAliqEfetCBS é a própria pCBS', // Descricao
+            true // Force (se nao preenchido exibe aviso: Preenchimento obrigatorio)
+        );
+        self::$dom->appChild($valores, $fed, 'Adicionando tag fed em valores');
+
+        self::$dom->appChild($IBSCBS, $valores, 'Adicionando tag valores em IBSCBS');
+
+        // TAG <totCIBS>
+        $totCIBS = self::$dom->createElement('totCIBS');
+        self::$dom->addChild(
+            $totCIBS, // Dom Element
+            'vTotNF', // Tag name
+            $rps->notaNacional->IBSCBS->totCIBS->vTotNF, // Tag content
+            true, // Obrigatorio
+            'Valor Total da NF considerando os impostos por fora: IBS e CBS.', // Descricao
+            true // Force (se nao preenchido exibe aviso: Preenchimento obrigatorio)
+        );
+
+        // TAG <gIBS>
+        $gIBS = self::$dom->createElement('gIBS');
+        self::$dom->addChild(
+            $gIBS, // Dom Element
+            'vIBSTot', // Tag name
+            $rps->notaNacional->IBSCBS->totCIBS->gIBS->vIBSTot, // Tag content
+            true, // Obrigatorio
+            'Valor total do IBS, vIBSTot = vIBSUF + vIBSMun', // Descricao
+            true // Force (se nao preenchido exibe aviso: Preenchimento obrigatorio)
+        );
+
+        // TAG <gIBSUFTot>
+        $gIBSUFTot = self::$dom->createElement('gIBSUFTot');
+        self::$dom->addChild(
+            $gIBSUFTot, // Dom Element
+            'vDifUF', // Tag name
+            $rps->notaNacional->IBSCBS->totCIBS->gIBS->gIBSUFTot->vDifUF, // Tag content
+            true, // Obrigatorio
+            'Total do Diferimento do IBS estadual. vDifUF = vIBSUF x pDifUF', // Descricao
+            true // Force (se nao preenchido exibe aviso: Preenchimento obrigatorio)
+        );
+        self::$dom->addChild(
+            $gIBSUFTot, // Dom Element
+            'vIBSUF', // Tag name
+            $rps->notaNacional->IBSCBS->totCIBS->gIBS->gIBSUFTot->vIBSUF, // Tag content
+            true, // Obrigatorio
+            'Total valor do IBS estadual. vIBSUF = vBC x (pIBSUF ou pAliqEfetUF)', // Descricao
+            true // Force (se nao preenchido exibe aviso: Preenchimento obrigatorio)
+        );
+        self::$dom->appChild($gIBS, $gIBSUFTot, 'Adicionando tag gIBSUFTot em gIBS');
+
+        // TAG <gIBSMunTot>
+        $gIBSMunTot = self::$dom->createElement('gIBSMunTot');
+        self::$dom->addChild(
+            $gIBSMunTot, // Dom Element
+            'vDifMun', // Tag name
+            $rps->notaNacional->IBSCBS->totCIBS->gIBS->gIBSMunTot->vDifMun, // Tag content
+            true, // Obrigatorio
+            'Total do Diferimento do IBS municipal. vDifMun = vIBSMun x pDifMun', // Descricao
+            true // Force (se nao preenchido exibe aviso: Preenchimento obrigatorio)
+        );
+        self::$dom->addChild(
+            $gIBSMunTot, // Dom Element
+            'vIBSMun', // Tag name
+            $rps->notaNacional->IBSCBS->totCIBS->gIBS->gIBSMunTot->vIBSMun, // Tag content
+            true, // Obrigatorio
+            'Total valor do IBS municipal. vIBSMun = vBC x (pIBSMun ou pAliqEfetMun)', // Descricao
+            true // Force (se nao preenchido exibe aviso: Preenchimento obrigatorio)
+        );
+        self::$dom->appChild($gIBS, $gIBSMunTot, 'Adicionando tag gIBSMunTot em gIBS');
+
+        self::$dom->appChild($totCIBS, $gIBS, 'Adicionando tag gIBS em totCIBS');
+
+        // TAG <gCBS>
+        $gCBS = self::$dom->createElement('gCBS');
+        self::$dom->addChild(
+            $gCBS, // Dom Element
+            'vDifCBS', // Tag name
+            $rps->notaNacional->IBSCBS->totCIBS->gCBS->vDifCBS, // Tag content
+            true, // Obrigatorio
+            'Total do Diferimento CBS. vDifCBS = vCBS x pDifCBS', // Descricao
+            true // Force (se nao preenchido exibe aviso: Preenchimento obrigatorio)
+        );
+        self::$dom->addChild(
+            $gCBS, // Dom Element
+            'vCBS', // Tag name
+            $rps->notaNacional->IBSCBS->totCIBS->gCBS->vCBS, // Tag content
+            true, // Obrigatorio
+            'Total valor da CBS da União. vCBS = vBC x (pCBS ou pAliqEfetCBS)', // Descricao
+            true // Force (se nao preenchido exibe aviso: Preenchimento obrigatorio)
+        );
+        self::$dom->appChild($totCIBS, $gCBS, 'Adicionando tag gCBS em totCIBS');
+
+        self::$dom->appChild($IBSCBS, $totCIBS, 'Adicionando tag totCIBS em IBSCBS');
+        self::$dom->appChild($notaNacional, $IBSCBS, 'Adicionando tag IBSCBS em notaNacional');
+        self::$dom->appChild($infRPS, $notaNacional, 'Adicionando tag notaNacional em infRPS');
 
 
         //Faturas

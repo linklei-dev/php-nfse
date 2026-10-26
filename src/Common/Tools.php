@@ -121,6 +121,12 @@ abstract class Tools
      * @var bool
      */
     protected $debugsoap = false;
+    /**
+     * Proxy URL usado em todas as comunicacoes com o webservice
+     * Ex: http://usuario:senha@host:porta (usuario e senha com urlencode)
+     * @var string
+     */
+    protected $proxy = '';
 
     /**
      * Constructor
@@ -146,6 +152,10 @@ abstract class Tools
         }
         $this->certificate = $certificate;
         $this->timezone = DateTime::tzdBR($config->siglaUF);
+
+        if (!empty($config->proxy)) {
+            $this->proxy = $config->proxy;
+        }
 
 
         if (empty($this->versao)) {
@@ -184,6 +194,27 @@ abstract class Tools
         $this->soap = $soap;
         $this->soap->loadCertificate($this->certificate);
         $this->soap->setDebugMode($this->debugsoap);
+    }
+
+    /**
+     * Aplica o proxy configurado (config->proxy) na classe soap atual
+     * Ex: http://usuario:senha@host:porta (usuario e senha com urlencode)
+     */
+    protected function applyProxy()
+    {
+        if (empty($this->proxy) || !is_object($this->soap)) {
+            return;
+        }
+        $proxy = parse_url($this->proxy);
+        if (empty($proxy['host'])) {
+            throw new \InvalidArgumentException('Proxy inválido, informe no formato http://usuario:senha@host:porta');
+        }
+        $this->soap->proxy(
+            $proxy['host'],
+            isset($proxy['port']) ? $proxy['port'] : '',
+            isset($proxy['user']) ? rawurldecode($proxy['user']) : '',
+            isset($proxy['pass']) ? rawurldecode($proxy['pass']) : ''
+        );
     }
 
     /**

@@ -133,7 +133,9 @@ class Tools extends ToolsBase
         $url = $this->url[$this->config->tpAmb];
         
         $this->soap = new SoapCurl($this->certificate);
-        
+        // Proxy (config->proxy): ex. a prefeitura bloqueia requisicoes vindas da AWS us-east-1
+        $this->applyProxy();
+
         //formata o xml da mensagem para o padão esperado pelo webservice
         $dom = new \DOMDocument('1.0', 'UTF-8');
         $dom->preserveWhiteSpace = false;
